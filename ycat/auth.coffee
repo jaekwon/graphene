@@ -1,3 +1,5 @@
+http = require 'http'
+
 # wrapper to require current_user
 exports.require_login = (req, res, next) ->
   if not req.current_user?
@@ -24,4 +26,20 @@ exports.require_admin = (req, res, next) ->
   else
     next(req, res)
 
+# get current user
+# sorry, node doesn't actually have a ServerRequest class?? TODO fix
+Object.defineProperty(http.IncomingMessage.prototype, 'current_user', {
+  get: () ->
+    if not @_current_user?
+      user_c = this.getSecureCookie('user')
+      if user_c? and user_c.length > 0
+        @_current_user = JSON.parse(user_c)
+    return @_current_user
+})
 
+# set current user
+Object.defineProperty(http.ServerResponse.prototype, 'current_user', {
+  set: (user_object) ->
+    @_current_user = user_object
+    this.setSecureCookie 'user', JSON.stringify(user_object)
+})

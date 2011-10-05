@@ -92,7 +92,7 @@ default_wrapper = (fn) ->
       else
         return fn(req, res)
     catch e
-      console.log("error in Rowt: " + e)
+      console.log("error in Router: " + e)
       console.log(e.stack)
       try
         res.writeHead(500, status: 'woops')

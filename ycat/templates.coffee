@@ -22,27 +22,26 @@ template_require = (filename) ->
       delete require.cache[path]
   return require(path)
 
-exports.render_layout = (template, context, req, res) ->
+exports.render_layout = (template, layout_context, req, res) ->
   # helper to render with layout, mind the closure. much like 'render :partial' in rails.
   # this way you can always call 'render' from within template code, and
   # the closure will be carried through.
   _render = (template, context) ->
+    context ||= {}
     # these should be rather static entities that extend the language as a DSL.
     # typical dynamic parameters should go in 'context'.
-    locals =
+    context.locals =
       require: require
       render: _render
       static_file: utils.static_file
       Markz: Markz
-    if req?
-      context.current_user = req.current_user
     tmpl_module = template_require(template)
     # compile the coffeekup render fn
     if not tmpl_module._compiled_fn?
       if not tmpl_module.template?
         throw new Error "The template file #{template} does not export a 'template' coffeekup function"
       try
-        tmpl_module._compiled_fn = coffeekup.compile tmpl_module.template, dynamic_locals: true
+        tmpl_module._compiled_fn = coffeekup.compile tmpl_module.template, locals: true
       catch err
         console.log "err in compiling #{template}: " + err
         throw err
@@ -69,7 +68,7 @@ exports.render_layout = (template, context, req, res) ->
     # compile the body
     html = ''
     try
-      html += tmpl_module._compiled_fn(context: context, locals: locals)
+      html += tmpl_module._compiled_fn(context)
       if tmpl_module._compiled_coffeescript
         html += "\n<script type='text/javascript'>#{tmpl_module._compiled_coffeescript}</script>"
       if tmpl_module._compiled_sass
@@ -79,10 +78,10 @@ exports.render_layout = (template, context, req, res) ->
       throw err
     return html
 
-  layout_context = {}
-  layout_context.title = 'YCatalyst' if not context.title?
+  layout_context ||= {}
+  layout_context.context = layout_context # self reference
+  layout_context.title ||= config.title
   layout_context.body_template = template
-  layout_context.body_context = context
   layout_context.current_user = req.current_user
   html = _render('layout', layout_context)
   if res?
