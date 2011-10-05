@@ -1,9 +1,9 @@
-[submodule "vendor/connect-auth"]
-	path = vendor/connect-auth
+[submodule "vendors/connect-auth"]
+	path = vendors/connect-auth
 	url = http://github.com/ciaranj/connect-auth.git
-[submodule "vendor/validator"]
-	path = vendor/validator
+[submodule "vendors/node-validator"]
+	path = vendors/node-validator
 	url = https://github.com/chriso/node-validator.git
-[submodule "vendor/cookie-node"]
-	path = vendor/cookie-node
+[submodule "vendors/cookie-node"]
+	path = vendors/cookie-node
 	url = https://github.com/jaekwon/cookie-node.git
