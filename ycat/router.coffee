@@ -1,9 +1,11 @@
-XRegExp = require('./static/xregexp').XRegExp
+XRegExp = require('xregexp').XRegExp
 qs = require 'querystring'
 url = require 'url'
-require.paths.unshift 'vendor/www-forms'
 www_forms = require 'www-forms'
 http = require 'http'
+config = require 'config'
+
+SERVER_LOG = require('fs').createWriteStream(config.log_dir+'/server.log', flags: 'a', encoding: 'utf8')
 
 # Sets some sensible defaults,
 # and also sets req.path_data / req.query_data / req.post_data

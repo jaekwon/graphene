@@ -4,12 +4,11 @@
 # MIT Licensed
 ###
 
-coffeekup = require '../static/coffeekup'
+coffeekup = require 'coffeekup'
 coffeescript = require 'coffee-script'
-sass = require 'sass'
-utils = require '../utils'
-Markz = require('../static/markz').Markz
-config = require '../config'
+Markz = require('markz').Markz
+config = require 'config'
+utils = require './utils'
 
 # autoreloading of templates for development environment
 template_mtimes = {}
@@ -48,14 +47,15 @@ exports.render_layout = (template, context, req, res) ->
         console.log "err in compiling #{template}: " + err
         throw err
     # plugin: sass
-    if tmpl_module.sass and not tmpl_module["_compiled_sass"]?
-      try
-        tmpl_module["_compiled_sass"] = _csass = sass.render(tmpl_module.sass)
-        if not _csass
-          console.log "Warning: sass for template is empty: #{template}"
-      catch err
-        console.log "err in compiling sass for #{template}: " + err
-        throw err
+    # TODO replace with a proper sass module
+    #if tmpl_module.sass and not tmpl_module["_compiled_sass"]?
+    #  try
+    #    tmpl_module["_compiled_sass"] = _csass = sass.render(tmpl_module.sass)
+    #    if not _csass
+    #      console.log "Warning: sass for template is empty: #{template}"
+    #  catch err
+    #    console.log "err in compiling sass for #{template}: " + err
+    #    throw err
     # plugin: coffeescript
     if tmpl_module.coffeescript and not tmpl_module["_compiled_coffeescript"]?
       try

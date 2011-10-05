@@ -5,6 +5,7 @@
 ###
 
 fs = require 'fs'
+http = require 'http'
 
 exports.ipRE = (() ->
   octet = '(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])'
@@ -20,8 +21,6 @@ exports.dir = (object) ->
       if (typeof(z) != 'number')
         methods.push(z)
     return methods.join(', ')
-
-SERVER_LOG = fs.createWriteStream('./log/server.log', flags: 'a', encoding: 'utf8')
 
 # get current user
 # sorry, node doesn't actually have a ServerRequest class?? TODO fix
