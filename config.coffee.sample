@@ -1,0 +1,24 @@
+exports.sendgrid_auth = {
+  user: 'SENDGRID_USER_EMAIL'
+  password: 'SENDGRID_USER_PASSWORD'
+}
+
+exports.superfeedr_auth = {
+  user: 'SUPERFEEDR_USER'
+  password: 'SUPERFEEDR_PASSWORD'
+}
+
+exports.cookie_secret = 'SOME SECRET STRING'
+
+exports.mongo = {
+  dbname: 'ycatalyst'
+  host: 'localhost'
+  port: 27017
+}
+
+exports.server = {
+  host: '0.0.0.0'
+  port: 8126
+}
+
+exports.support_email = 'SUPPORT@YOURDOMAIN.COM'
