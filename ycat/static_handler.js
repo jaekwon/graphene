@@ -1,68 +1,20 @@
 // this is derived from a node.js sample project.
 
-var createServer = require("http").createServer;
 var readFile = require("fs").readFile;
 var sys = require("sys");
-var url = require("url");
-DEBUG = false;
-
-var fu = exports;
-
-var NOT_FOUND = "Not Found\n";
-
-function notFound(req, res) {
-  res.writeHead(404, { "Content-Type": "text/plain"
-                     , "Content-Length": NOT_FOUND.length
-                     });
-  res.end(NOT_FOUND);
-}
-
-var getMap = {};
-
-fu.get = function (path, handler) {
-  getMap[path] = handler;
-};
-var server = createServer(function (req, res) {
-  if (req.method === "GET" || req.method === "HEAD") {
-    var handler = getMap[url.parse(req.url).pathname] || notFound;
-
-    res.simpleText = function (code, body) {
-      res.writeHead(code, { "Content-Type": "text/plain"
-                          , "Content-Length": body.length
-                          });
-      res.end(body);
-    };
-
-    res.simpleJSON = function (code, obj) {
-      var body = new Buffer(JSON.stringify(obj));
-      res.writeHead(code, { "Content-Type": "text/json"
-                          , "Content-Length": body.length
-                          });
-      res.end(body);
-    };
-
-    handler(req, res);
-  }
-});
-
-fu.listen = function (port, host) {
-  server.listen(port, host);
-  sys.puts("Server at http://" + (host || "127.0.0.1") + ":" + port.toString() + "/");
-};
-
-fu.close = function () { server.close(); };
+var config = require('config');
 
 function extname (path) {
   var index = path.lastIndexOf(".");
   return index < 0 ? "" : path.substring(index);
 }
 
-fu.staticHandler = function (filename) {
+exports.staticHandler = function (filename) {
   var body, headers;
-  var content_type = fu.mime.lookupExtension(extname(filename));
+  var content_type = exports.mime.lookupExtension(extname(filename));
 
   function loadResponseData(callback) {
-    if (body && headers && !DEBUG) {
+    if (body && headers && !config.debug) {
       callback();
       return;
     }
@@ -76,7 +28,7 @@ fu.staticHandler = function (filename) {
         headers = { "Content-Type": content_type
                   , "Content-Length": body.length
                   };
-        if (!DEBUG) headers["Cache-Control"] = "public";
+        if (!config.debug) headers["Cache-Control"] = "public";
         sys.puts("ASYNC CALL: static file " + filename + " loaded");
         callback();
       }
@@ -92,10 +44,10 @@ fu.staticHandler = function (filename) {
 };
 
 // stolen from jack- thanks
-fu.mime = {
+exports.mime = {
   // returns MIME type for extension, or fallback, or octet-steam
   lookupExtension : function(ext, fallback) {
-    return fu.mime.TYPES[ext.toLowerCase()] || fallback || 'application/octet-stream';
+    return exports.mime.TYPES[ext.toLowerCase()] || fallback || 'application/octet-stream';
   },
 
   // List of most common mime-types, stolen from Rack.

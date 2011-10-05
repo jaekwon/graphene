@@ -1,3 +1,4 @@
+exports.debug = true
 exports.cookie_secret = 'SOME SECRET STRING'
 exports.server = {
   host: '0.0.0.0'

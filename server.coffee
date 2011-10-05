@@ -38,7 +38,7 @@ server = ycat.router.Router([
           res.writeHead 404, 'does not exist'
           res.end()
         else
-          fu.staticHandler(filepath)(req, res)
+          ycat.staticHandler(filepath)(req, res)
   ]
 
   ['/', (req, res) ->

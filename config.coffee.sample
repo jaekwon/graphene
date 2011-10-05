@@ -1,3 +1,5 @@
+exports.debug = true
+
 exports.sendgrid_auth = {
   user: 'SENDGRID_USER_EMAIL'
   password: 'SENDGRID_USER_PASSWORD'
