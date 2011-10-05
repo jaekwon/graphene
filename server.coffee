@@ -21,10 +21,11 @@ _ = require 'underscore'
 
 if true # TODO revisit
   process.on 'uncaughtException', (err) ->
-    console.log "XXXXXXXXX"
+    console.log "________________"
+    console.log "http://debuggable.com/posts/node-js-dealing-with-uncaught-exceptions:4c933d54-1428-443c-928d-4e1ecbdd56cb"
     console.log err.message
     console.log err.stack
-    console.log "XXXXXXXXX FIX THIS ASAP, http://debuggable.com/posts/node-js-dealing-with-uncaught-exceptions:4c933d54-1428-443c-928d-4e1ecbdd56cb"
+    console.log "^^^^^^^^^^^^^^^^"
 
 server = ycat.router.Router([
 
