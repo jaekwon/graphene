@@ -14,7 +14,7 @@ utils = require './utils'
 template_mtimes = {}
 template_require = (filename) ->
   path = require.resolve("../templates/#{filename}.coffee")
-  if config.env and config.env == 'development'
+  if config.debug
     stat = require('fs').statSync(path)
     if not template_mtimes[path] or template_mtimes[path] < stat.mtime
       console.log "loading templates/#{filename}.coffee template..."
